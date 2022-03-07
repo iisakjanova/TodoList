@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 import './AddTask.css';
 
@@ -6,12 +7,17 @@ const initialState = {
     name: ''
 };
 
-const AddTask = ({onSubmit, taskToEdit}) => {
+const AddTask = ({onSubmit, id}) => {
     const [task, setTask] = useState(initialState);
+    const taskToEdit = useSelector(state => state.tasks[id]);
 
     useEffect(() => {
-        setTask(taskToEdit);
-    }, [taskToEdit]);
+        if (taskToEdit) {
+            setTask(taskToEdit);
+        } else {
+            setTask(initialState);
+        }
+    }, [id]);
 
     const handleChange = (e) => {
         const {name, value} = e.target;

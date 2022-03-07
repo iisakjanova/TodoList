@@ -4,57 +4,45 @@ import { nanoid } from "nanoid";
 import AddTask from "../AddTask/AddTask";
 import Tasks from "../Tasks/Tasks";
 import './TodoList.css';
+import { useDispatch, useSelector } from "react-redux";
+import { addTask, changeTaskStatus, deleteTask, editTask } from "../../store/actions/tasksActions";
 
 const TodoList = () => {
-    const [tasks, setTasks] = useState({});
-    const [taskToEdit, setTaskToEdit] = useState({});
+    const [id, setId] = useState(null);
 
-    const onCheck = (task) => {
-        setTasks(
-            {
-                ...tasks,
-                [task.id]: {
-                    id: task.id,
-                    name: task.name,
-                    active: !task.active
-                }
-            }
-        );
+    const dispatch = useDispatch();
+    const tasks = useSelector(state => state.tasks);
+
+    const onCheck = (id) => {
+        dispatch(changeTaskStatus(id));
     };
 
     const handleDelete = (id) => {
-        const {[id]: remove, ...rest} = tasks;
-        setTasks(rest);
+        dispatch(deleteTask(id));
     };
 
     const handleEdit = (id) => {
-        const task = tasks[id];
-        setTaskToEdit(task);
+        setId(id);
     };
 
     const handleSubmit = (task) => {
-        let id;
-
+        const taskData = {
+            id: task.id ?? nanoid(),
+            name: task.name,
+            active: task.active ?? true
+        };
+        
         if (!task.id) {
-            id = nanoid();
+            dispatch(addTask(taskData));
         } else {
-            id = task.id;
-        }
-
-        setTasks({
-            ...tasks,
-            [id]: {
-                id,
-                name: task.name,
-                active: task.active ?? true
-            }
-        });
+            dispatch(editTask(taskData));
+        } 
     };
 
     return (
         <div className="todoList">
             <h2 className="title">Todo List</h2>
-            {Object.values(tasks).length > 0 ? 
+            {Object.keys(tasks).length > 0 ? 
                 <Tasks 
                     tasks={tasks} 
                     onCheck={onCheck}
@@ -65,7 +53,7 @@ const TodoList = () => {
             }
             <AddTask 
                 onSubmit={handleSubmit} 
-                taskToEdit={taskToEdit}
+                id={id}
             />
         </div>
     );

@@ -11,7 +11,7 @@ const Tasks = ({tasks, onCheck, onDelete, onEdit}) => {
                     key={task.id}
                     name={task.name}
                     active={task.active}
-                    onCheck={(e) => onCheck(task)}
+                    onCheck={(e) => onCheck(task.id)}
                     onDelete={() => onDelete(task.id)}
                     onEdit={() => {onEdit(task.id)}}
                 />
