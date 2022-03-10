@@ -1,11 +1,10 @@
-import { useState } from "react";
-import { nanoid } from "nanoid";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 import AddTask from "../AddTask/AddTask";
 import Tasks from "../Tasks/Tasks";
 import './TodoList.css';
-import { useDispatch, useSelector } from "react-redux";
-import { addTask, changeTaskStatus, deleteTask, editTask } from "../../store/actions/tasksActions";
+import { addTask, changeTaskStatus, deleteTask, updateTask, getTasks } from "../../store/actions/tasksActions";
 
 const TodoList = () => {
     const [id, setId] = useState(null);
@@ -13,8 +12,12 @@ const TodoList = () => {
     const dispatch = useDispatch();
     const tasks = useSelector(state => state.tasks);
 
-    const onCheck = (id) => {
-        dispatch(changeTaskStatus(id));
+    useEffect(() => {
+        dispatch(getTasks());
+    }, [dispatch]);
+
+    const onCheck = (id, status) => {
+        dispatch(changeTaskStatus({id, active: !status}));
     };
 
     const handleDelete = (id) => {
@@ -27,7 +30,7 @@ const TodoList = () => {
 
     const handleSubmit = (task) => {
         const taskData = {
-            id: task.id ?? nanoid(),
+            id: task.id ?? '',
             name: task.name,
             active: task.active ?? true
         };
@@ -35,8 +38,10 @@ const TodoList = () => {
         if (!task.id) {
             dispatch(addTask(taskData));
         } else {
-            dispatch(editTask(taskData));
+            dispatch(updateTask(taskData));
         } 
+
+        setId('');
     };
 
     return (
@@ -52,6 +57,7 @@ const TodoList = () => {
                 <p>No tasks yet</p>
             }
             <AddTask 
+                key={id}
                 onSubmit={handleSubmit} 
                 id={id}
             />

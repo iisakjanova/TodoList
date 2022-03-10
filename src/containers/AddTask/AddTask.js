@@ -17,7 +17,7 @@ const AddTask = ({onSubmit, id}) => {
         } else {
             setTask(initialState);
         }
-    }, [id]);
+    }, []);
 
     const handleChange = (e) => {
         const {name, value} = e.target;
