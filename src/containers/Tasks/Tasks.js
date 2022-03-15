@@ -1,9 +1,9 @@
-import { useState } from 'react';
-
 import Task from '../../components/Task/Task';
 import './Tasks.css';
 
 const Tasks = ({tasks, onCheck, onDelete, onEdit}) => {
+    
+
     return (
         <ul className='tasks'>
             {Object.values(tasks).map(task => (

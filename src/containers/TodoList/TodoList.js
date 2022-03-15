@@ -3,14 +3,20 @@ import { useDispatch, useSelector } from "react-redux";
 
 import AddTask from "../AddTask/AddTask";
 import Tasks from "../Tasks/Tasks";
-import './TodoList.css';
+import Preloader from "../../components/UI/Preloader/Preloader";
 import { addTask, changeTaskStatus, deleteTask, updateTask, getTasks } from "../../store/actions/tasksActions";
+
+import './TodoList.css';
 
 const TodoList = () => {
     const [id, setId] = useState(null);
 
     const dispatch = useDispatch();
     const tasks = useSelector(state => state.tasks);
+    const fetchLoading = useSelector(state => state.fetchLoading);
+    const addTaskLoading = useSelector(state => state.addTaskLoading);
+    const updateLoading = useSelector(state => state.updateLoading);
+    const deleteLoading = useSelector(state => state.deleteLoading);
 
     useEffect(() => {
         dispatch(getTasks());
@@ -46,6 +52,7 @@ const TodoList = () => {
 
     return (
         <div className="todoList">
+            <Preloader loading={fetchLoading || addTaskLoading || updateLoading || deleteLoading}/>
             <h2 className="title">Todo List</h2>
             {Object.keys(tasks).length > 0 ? 
                 <Tasks 
