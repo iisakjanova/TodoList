@@ -19,13 +19,10 @@ import {
 const initialState = {
     tasks: {},
     fetchLoading: false,
-    fetchError: null,
     addTaskLoading: false,
-    addTaskError: null,
     updateLoading: false,
-    updateError: null,
     deleteLoading: false,
-    deletError: null
+    error: null
 };
 
 const tasksReducer = (state = initialState, action) => {
@@ -34,7 +31,7 @@ const tasksReducer = (state = initialState, action) => {
             return {
                 ...state,
                 addTaskLoading: true,
-                addTaskError: null
+                error: null
             };
         case ADD_TASK_SUCCESS:
             return {
@@ -53,13 +50,13 @@ const tasksReducer = (state = initialState, action) => {
             return {
                 ...state,
                 addTaskLoading: false,
-                addTaskError: action.payload
+                error: action.payload
             };
         case UPDATE_TASK_REQUEST:
             return {
                 ...state,
                 updateLoading: true,
-                updateError: null
+                error: null
             };
         case UPDATE_TASK_SUCCESS:
             return {
@@ -78,13 +75,13 @@ const tasksReducer = (state = initialState, action) => {
             return {
                 ...state,
                 updateLoading: false,
-                updateError: action.payload
+                error: action.payload
             };
         case DELETE_TASK_REQUEST: 
             return {
                 ...state,
                 deleteLoading: true,
-                deleteError: null
+                error: null
             };
         case DELETE_TASK_SUCCESS:
             const {[action.payload]: _, ...rest} = state.tasks; 
@@ -98,13 +95,13 @@ const tasksReducer = (state = initialState, action) => {
             return {
                 ...state,
                 deleteLoading: false,
-                deletError: action.payload
+                error: action.payload
             };
         case CHANGE_TASK_STATUS_REQUEST:
             return {
                 ...state,
                 updateLoading: true,
-                updateError: null
+                error: null
             };
         case CHANGE_TASK_STATUS_SUCCESS:
             return {
@@ -123,12 +120,13 @@ const tasksReducer = (state = initialState, action) => {
             return {
                 ...state,
                 updateLoading: false,
-                updateError: action.payload
+                error: action.payload
             };
         case GET_TASKS_REQUEST:
             return {
                 ...state,
-                fetchLoading: true
+                fetchLoading: true,
+                error: action.payload
             };
         case GET_TASKS_SUCCESS:
             return {
@@ -140,7 +138,7 @@ const tasksReducer = (state = initialState, action) => {
             return {
                 ...state,
                 fetchLoading: false,
-                fetchError: action.payload
+                error: action.payload
             };
         default: 
             return state;

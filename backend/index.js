@@ -28,10 +28,14 @@ app.get('/', (req, res) => {
 app.post('/', (req, res) => {
     const id = nanoid();
 
+    if (!req.body.name) {
+        return res.status(400).send({message: 'Invalid data!'});
+    }
+
     const newTask = {
         id,
         name: req.body.name,
-        active: req.body.active,
+        active: req.body.active || true,
     };
 
     tasks = {
@@ -42,13 +46,17 @@ app.post('/', (req, res) => {
     res.send(newTask);
 });
 
-app.put('/', (req, res) => {
+app.put('/:id', (req, res) => {
+    if (!tasks[req.params.id]) {
+        return res.status(404).send({message: 'Task is not found!'});
+    }
+
     const {id, ...update} = req.body;
 
     tasks = {
         ...tasks,
-        [id]: {
-            ...tasks[id],
+        [req.params.id]: {
+            ...tasks[req.params.id],
             ...update
         }
     };
@@ -58,6 +66,11 @@ app.put('/', (req, res) => {
 
 app.delete('/:id', (req, res) => {
     const id = req.params.id;
+
+    if (!tasks[id]) {
+        return res.status(404).send({message: 'Task is not found!'});
+    }
+
     const {[id]: _, ...rest } = tasks;
 
     tasks = rest;

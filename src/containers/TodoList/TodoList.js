@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import Alert from '@mui/material/Alert';
 
 import AddTask from "../AddTask/AddTask";
 import Tasks from "../Tasks/Tasks";
@@ -17,6 +18,7 @@ const TodoList = () => {
     const addTaskLoading = useSelector(state => state.addTaskLoading);
     const updateLoading = useSelector(state => state.updateLoading);
     const deleteLoading = useSelector(state => state.deleteLoading);
+    const error = useSelector(state => state.error);
 
     useEffect(() => {
         dispatch(getTasks());
@@ -52,7 +54,14 @@ const TodoList = () => {
 
     return (
         <div className="todoList">
-            <Preloader loading={fetchLoading || addTaskLoading || updateLoading || deleteLoading}/>
+            <Preloader 
+                loading={fetchLoading || addTaskLoading || updateLoading || deleteLoading}
+            />
+            {error ? 
+                <Alert severity="error">
+                    {`${error.status} ${error.data.message || error.statusText}`}
+                </Alert>
+                : null}
             <h2 className="title">Todo List</h2>
             {Object.keys(tasks).length > 0 ? 
                 <Tasks 

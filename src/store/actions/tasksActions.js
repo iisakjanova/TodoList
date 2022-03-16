@@ -45,7 +45,7 @@ export const getTasks = () => {
             const response = await Axios.get('/');
             dispatch(getTasksSuccess(response.data));
         } catch(e) {
-            dispatch(getTasksFailure(e));
+            dispatch(getTasksFailure(e.response));
         }
     };
 };
@@ -54,15 +54,14 @@ export const changeTaskStatus = (data) => {
     return async dispatch => {
         try {
             dispatch(changeTaskStatusRequest());
-            await Axios.put('/', 
+            await Axios.put(`/${data.id}`, 
                 {
-                    id: data.id, 
                     active: data.active
                 }
             );
             dispatch(changeTaskStatusSuccess(data.id));
         } catch(e) {
-            dispatch(changeTaskStatusFailure(e));
+            dispatch(changeTaskStatusFailure(e.response));
         }
     };
 };
@@ -71,10 +70,10 @@ export const updateTask = (task) => {
     return async dispatch => {
         try {
             dispatch(updateTaskRequest());
-            await Axios.put('/', task);
+            await Axios.put(`/${task.id}`, task);
             dispatch(updateTaskSuccess(task));
         } catch(e) {
-            dispatch(updateTaskFailure(e));
+            dispatch(updateTaskFailure(e.response));
         }
     };
 };
@@ -86,7 +85,7 @@ export const deleteTask = (id) => {
             await Axios.delete(`/${id}`);
             dispatch(deleteTaskSuccess(id));
         } catch(e) {
-            dispatch(deleteTaskFailure(e));
+            dispatch(deleteTaskFailure(e.response));
         }
     };
 };
@@ -98,7 +97,7 @@ export const addTask = (task) => {
             const response = await Axios.post('/', task);
             dispatch(addTaskSuccess(response.data));
         } catch(e) {
-            dispatch(addTaskFailure(e));
+            dispatch(addTaskFailure(e.response));
         }
     };
 };
