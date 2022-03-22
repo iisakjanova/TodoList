@@ -1,11 +1,21 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+
+import Box from '@mui/material/Box';
 import Alert from '@mui/material/Alert';
+import Typography from '@mui/material/Typography';
+import Stack from '@mui/material/Stack';
 
 import AddTask from "../AddTask/AddTask";
 import Tasks from "../Tasks/Tasks";
 import Preloader from "../../components/UI/Preloader/Preloader";
-import { addTask, changeTaskStatus, deleteTask, updateTask, getTasks } from "../../store/actions/tasksActions";
+import { 
+    addTask, 
+    changeTaskStatus, 
+    deleteTask, 
+    updateTask, 
+    getTasks 
+} from "../../store/actions/tasksActions";
 
 import './TodoList.css';
 
@@ -53,7 +63,7 @@ const TodoList = () => {
     };
 
     return (
-        <div className="todoList">
+        <Box className="todoList">
             <Preloader 
                 loading={fetchLoading || addTaskLoading || updateLoading || deleteLoading}
             />
@@ -62,22 +72,35 @@ const TodoList = () => {
                     {`${error.status} ${error.data.message || error.statusText}`}
                 </Alert>
                 : null}
-            <h2 className="title">Todo List</h2>
-            {Object.keys(tasks).length > 0 ? 
-                <Tasks 
-                    tasks={tasks} 
-                    onCheck={onCheck}
-                    onDelete={handleDelete}
-                    onEdit={handleEdit}
-                /> :
-                <p>No tasks yet</p>
-            }
-            <AddTask 
-                key={id}
-                onSubmit={handleSubmit} 
-                id={id}
-            />
-        </div>
+            <Typography 
+                sx={{
+                    mb: 3, 
+                    textAlign: 'center'
+                }} 
+                variant='h4' 
+            >
+                Todo List
+            </Typography>
+            <Stack 
+                direction="column" 
+                spacing={2}
+            >
+                {Object.keys(tasks).length > 0 ? 
+                    <Tasks 
+                        tasks={tasks} 
+                        onCheck={onCheck}
+                        onDelete={handleDelete}
+                        onEdit={handleEdit}
+                    /> :
+                    <Typography variant="body1">No tasks yet</Typography>
+                }
+                <AddTask 
+                    key={id}
+                    onSubmit={handleSubmit} 
+                    id={id}
+                />
+            </Stack>
+        </Box>
     );
 };
 

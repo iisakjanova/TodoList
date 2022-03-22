@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
-import './AddTask.css';
+import Box from '@mui/material/Box';
+import Paper from '@mui/material/Paper';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
 
 const initialState = {
     name: ''
@@ -39,22 +42,40 @@ const AddTask = ({onSubmit, id}) => {
     };
 
     return (
-        <div className="addTask">
-            <form onSubmit={handleSubmit}>
-                <textarea 
-                    placeholder="Enter a task"
+        <Paper 
+            sx={{p: 3}}
+            elevation={10}
+            className="addTask" 
+        >
+            <Box 
+                component="form" 
+                onSubmit={handleSubmit} 
+                sx={{
+                    '& .MuiInputBase-root': { width: '100%' },
+                }}
+            >
+                <TextField 
+                    sx={{
+                        display: 'block', 
+                        mb: 2, 
+                        width: '100%'
+                    }}
+                    label="Enter a task"
                     name="name" 
-                    rows='5'
+                    multiline
+                    minRows={4}
                     value={task.name} 
                     onChange={handleChange} 
                 />
-                <button 
+                <Button 
+                    variant="contained" 
+                    type="submit"
                     disabled={!task.name}
                 >
                     Save
-                </button>
-            </form>
-        </div>
+                </Button>
+            </Box>
+        </Paper>
     );
 };
 

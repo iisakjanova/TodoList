@@ -1,26 +1,4 @@
-.taskWrapper {
-    padding: 15px 0;
-    display: flex;
-    align-items: flex-start;
-}
-
-.task {
-    font-size: 20px;
-}
-
 .nonActive {
     color: grey;
     text-decoration: line-through;
-}
-
-.btns {
-    margin-left: auto;
-    display: flex;
-    align-items: flex-start;
-}
-
-.deleteBtn {
-    color: red;
-    margin: 0 10px;
-    text-decoration: none;
 }

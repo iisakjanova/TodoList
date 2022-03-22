@@ -1,11 +1,13 @@
+import Stack from '@mui/material/Stack';
+
 import Task from '../../components/Task/Task';
-import './Tasks.css';
 
 const Tasks = ({tasks, onCheck, onDelete, onEdit}) => {
-    
-
     return (
-        <ul className='tasks'>
+        <Stack 
+            direction="column" 
+            spacing={2}
+        >
             {Object.values(tasks).map(task => (
                 <Task
                     key={task.id}
@@ -16,7 +18,7 @@ const Tasks = ({tasks, onCheck, onDelete, onEdit}) => {
                     onEdit={() => {onEdit(task.id)}}
                 />
             ))}
-        </ul>
+        </Stack>
     );
 };
 
