@@ -1,26 +1,25 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
 import Alert from '@mui/material/Alert';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 
-import AddTask from "../AddTask/AddTask";
 import Tasks from "../Tasks/Tasks";
 import Preloader from "../../components/UI/Preloader/Preloader";
 import { 
-    addTask, 
     changeTaskStatus, 
     deleteTask, 
-    updateTask, 
     getTasks 
 } from "../../store/actions/tasksActions";
 
 import './TodoList.css';
+import { Button } from "@mui/material";
 
 const TodoList = () => {
-    const [id, setId] = useState(null);
+    // const [id, setId] = useState(null);
 
     const dispatch = useDispatch();
     const tasks = useSelector(state => state.tasks);
@@ -29,6 +28,8 @@ const TodoList = () => {
     const updateLoading = useSelector(state => state.updateLoading);
     const deleteLoading = useSelector(state => state.deleteLoading);
     const error = useSelector(state => state.error);
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         dispatch(getTasks());
@@ -43,24 +44,29 @@ const TodoList = () => {
     };
 
     const handleEdit = (id) => {
-        setId(id);
+        // setId(id);
+        navigate(`/edit/${id}`);
     };
 
-    const handleSubmit = (task) => {
-        const taskData = {
-            id: task.id ?? '',
-            name: task.name,
-            active: task.active ?? true
-        };
+    const handleAdd = () => {
+        navigate('/add');
+    };
+
+    // const handleSubmit = (task) => {
+    //     const taskData = {
+    //         id: task.id ?? '',
+    //         name: task.name,
+    //         active: task.active ?? true
+    //     };
         
-        if (!task.id) {
-            dispatch(addTask(taskData));
-        } else {
-            dispatch(updateTask(taskData));
-        } 
+    //     if (!task.id) {
+    //         dispatch(addTask(taskData));
+    //     } else {
+    //         dispatch(updateTask(taskData));
+    //     } 
 
-        setId('');
-    };
+    //     setId('');
+    // };
 
     return (
         <Box className="todoList">
@@ -94,11 +100,17 @@ const TodoList = () => {
                     /> :
                     <Typography variant="body1">No tasks yet</Typography>
                 }
-                <AddTask 
+                {/* <AddTask 
                     key={id}
                     onSubmit={handleSubmit} 
                     id={id}
-                />
+                /> */}
+                <Button 
+                    variant="contained"  
+                    onClick={handleAdd}
+                >
+                    Add task
+                </Button>
             </Stack>
         </Box>
     );
